@@ -1,0 +1,14 @@
+{
+  "name": "oauth-resource-server",
+  "main": "src/index.js",
+  "version": "1.0.0",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "dotenv": "^10.0.0",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

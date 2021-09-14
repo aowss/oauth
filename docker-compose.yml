@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+
+  # hydra-migrate:
+  #   image: oryd/hydra:v1.10.6
+  #   environment:
+  #     - DSN=postgres://hydra:secret@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+  #
+  # hydra:
+  #   image: oryd/hydra:v1.10.6
+  #   environment:
+  #     - DSN=postgres://hydra:secret@postgresd:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+  #
+  # postgresd:
+  #   image: postgres:9.6
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_USER=hydra
+  #     - POSTGRES_PASSWORD=secret
+  #     - POSTGRES_DB=hydra
+
+  oauth-client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+    - 3000:3000
+    depends_on:
+    - oauth-resource-server
+    volumes:
+    - .:/app
+    environment:
+    - CLIENT_ID=${CLIENT_ID}
+    - CLIENT_SECRET=${CLIENT_SECRET}
+    - AUTH_SERVER_URL=${AUTH_SERVER_URL}
+    - RESOURCE_SERVER_URL=${RESOURCE_SERVER_URL}
+
+  oauth-resource-server:
+    build:
+      context: resource-server
+      dockerfile: Dockerfile
+    ports:
+    - 3001:3001
+    volumes:
+    - .:/app
+    environment:
+    - PUBLIC_KEY=${PUBLIC_KEY}
+    - ISSUER=${ISSUER}
